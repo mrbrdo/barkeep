@@ -1,9 +1,9 @@
 GIT
-  remote: http://github.com/ooyala/grit.git
-  revision: 38d0e6660b78bff97499280fae09a78b087c50b4
-  ref: 38d0e6660b78bff97499280fae09a78b087c50b4
+  remote: git://github.com/gitlabhq/grit.git
+  revision: ca49cdd437626af3088083a9ad0c49adacb7135f
   specs:
-    grit (2.4.1)
+    gitlab-grit (2.5.1)
+      charlock_holmes (~> 0.6.9)
       diff-lcs (~> 1.1)
       mime-types (~> 1.15)
       posix-spawn (~> 0.3.6)
@@ -17,6 +17,7 @@ GEM
     backtrace_shortener (0.1.0)
     bourbon (2.1.1)
       sass (>= 3.1)
+    charlock_holmes (0.6.9.4)
     clockwork (0.2.4)
     coderay (0.9.8)
     coffee-script (2.2.0)
@@ -146,7 +147,7 @@ DEPENDENCIES
   diff-lcs
   fezzik
   foreman
-  grit!
+  gitlab-grit!
   json
   methodchain
   mustache
