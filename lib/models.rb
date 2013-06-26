@@ -2,7 +2,7 @@ require "rubygems"
 require "sequel"
 
 DB = Sequel.connect(:host => DB_HOST, :database => DB_NAME, :port => DB_PORT, :user => DB_USER,
-                    :password => DB_PASSWORD, :adapter => "mysql2")
+                    :password => DB_PASSWORD, :adapter => "postgres")
 
 # This plugin gives you the "add_association_dependency" method, which lets you specify other objects to be
 # destroyed when the current model gets destroyed, e.g. when you delete a provider, also delete its movies.
