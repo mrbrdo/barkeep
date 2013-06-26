@@ -1,0 +1,37 @@
+<%#
+  View arguments:
+  - saved_search: a SavedSearch object.
+  - token: a stringified PagingToken given by the client
+  - direction: "before" or "after"
+  - page_number: the page number we should display for this page. This doesn't need to be strictly accurate;
+    it's a best guess. It's managed by the client for continuity of user experience.
+ %>
+<%
+  min_commit_date = Time.now - 60 * 60 * 24 * 20 # TODO
+  results = MetaRepo.instance.find_commits(
+      :repos => nil,
+      :branches => [],
+      :authors => nil,
+      :paths => nil,
+      :token => nil,
+      :direction => "before",
+      :commit_filter_proc => MetaRepo.method(:select_unapproved_commits).to_proc,
+      :after => min_commit_date,
+      :limit => 25)
+
+  commits, tokens = results[:commits], results[:tokens]
+  from = tokens[:from]
+  to = tokens[:to]
+%>
+<div class="savedSearch" from-token="<%= from %>" to-token="<%= to %>">
+  <div class="header"></div>
+  <% if commits.empty? %>
+    <div class="noResults">No search results.</div>
+  <% else %>
+    <table class="commitsList">
+      <% commits.each do |commit| %>
+        <%= erb :_commit_line, :layout => false, :locals => { :commit => commit } %>
+      <% end %>
+    </table>
+  <% end %>
+</div>

@@ -276,6 +276,10 @@ class BarkeepServer < Sinatra::Base
     nil
   end
 
+  get "/overview" do
+    erb :overview
+  end
+
   get "/commits" do
     erb :commit_search, :locals => { :saved_searches => current_user ? current_user.saved_searches : [] }
   end

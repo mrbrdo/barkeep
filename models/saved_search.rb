@@ -76,33 +76,12 @@ class SavedSearch < Sequel::Model
 
   private
 
-  # We asking for commits from Git, we can get back commits that are present on the filesystem (have been
-  # pulled) but which have not had records created in the DB for them. Omit those commits from the saved
-  # search for now, because they're not operable yet. You can't link to them, for example.
   def select_commits_currently_in_db(grit_commits)
-    # This filter doesn't have any specific dataset criteria, other than the commits need to exist in the DB.
-    select_commits_matching_dataset_criteria(grit_commits, {})
+    MetaRepo.select_commits_currently_in_db(grit_commits)
   end
 
-  # This is used as a commit filter when fetching the commits which make up this saved search.
-  # Note that this filter is a strict subset of the filter "select_commits_in_db".
   def select_unapproved_commits(grit_commits)
-    select_commits_matching_dataset_criteria(grit_commits, :approved_by_user_id => nil)
-  end
-
-  # Finds matching database rows from the given set of grit_commits and ensures they also match the given
-  # dataset filter.
-  # - grit_commits: a list of grit commits. *These are assumed to all be from the same repo*.
-  # - dataset_filter_options: a hash of filter options, to be passed to the Commit dataset's filter() method.
-  # Returns a list of matching commits. The original order of the commits in grit_commits is preserved.
-  def select_commits_matching_dataset_criteria(grit_commits, dataset_filter_options)
-    return [] if grit_commits.empty?
-    repo = GitRepo.first(:name => grit_commits.first.repo_name)
-    raise "This commit does not have a repo_name set on it: #{grit_commits.first.sha}" unless repo
-    commits_dataset = Commit.select(:sha).filter(:sha => grit_commits.map(&:sha), :git_repo_id => repo.id).
-        filter(dataset_filter_options)
-    commit_ids = Set.new(commits_dataset.all.map(&:sha))
-    grit_commits.select { |grit_commit| commit_ids.include?(grit_commit.sha) }
+    MetaRepo.select_unapproved_commits(grit_commits)
   end
 
   def english_quantity(word, quantity) quantity == 1 ? word : word + "s" end

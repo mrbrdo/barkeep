@@ -48,13 +48,17 @@
 
         <nav>
           <ul>
-            <!-- These extra divs are needed for styling. -->
+            <li class="<%= current_page_if_url("overview") %>">
+              <div><a href="/overview">Overview</a></div>
+            </li>
             <li class="<%= current_page_if_url("commits") %>">
               <div><a href="/commits">Commits</a></div>
             </li>
+            <!--
             <li class="<%= current_page_if_url("stats") %>">
               <div><a href="/stats">Stats</a></div>
             </li>
+            -->
           </ul>
         </nav>
 
